@@ -2,13 +2,20 @@
 
 
 class Config(object):
-    def __init__(self, word_embedding_dimension=100, word_num=20000,
-                 epoch=2000, sentence_max_size=40,
-                 learning_rate=0.01, batch_size=1,
+    def __init__(self,
+                 word_embedding_dimension=100,
+                 word_num=20000,
+                 epoch=2000,
+                 sentence_max_size=40,
+                 learning_rate=0.01,
+                 batch_size=1,
                  drop_out=0.5,
                  dict_size=50000,
                  bidirectional=False,
-                 doc_len=40):
+                 doc_len=40,
+                 cuda=None,
+                 label_num=None,
+                 out_channel=None):
         self.word_embedding_dimension = word_embedding_dimension
         self.word_num = word_num
         self.epoch = epoch
@@ -19,4 +26,6 @@ class Config(object):
         self.drop_out = drop_out
         self.bidirectional = bidirectional
         self.doc_len = doc_len
-
+        self.cuda = cuda,
+        self.label_num = label_num,
+        self.out_channel = out_channel

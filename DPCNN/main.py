@@ -5,8 +5,11 @@ import torch.autograd as autograd
 import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data as data
+# from DPCNN.config import Config
 from config import Config
+# from DPCNN.model import DPCNN
 from model import DPCNN
+# from DPCNN.data import TextDataset
 from data import TextDataset
 import argparse
 

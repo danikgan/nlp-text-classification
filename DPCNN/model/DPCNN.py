@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from .BasicModule import BasicModule
 
-
 class DPCNN(BasicModule):
     """
     DPCNN for sentences classification.

@@ -14,7 +14,7 @@ import argparse
 #from DPCNN.data import TextDataset
 
 from config import Config
-from model import DPCNN
+from model import DPCNN, Example2
 from data import TextDataset
 
 # seed for random numbers
@@ -30,8 +30,10 @@ parser.add_argument('--out_channel', type=int, default=2)
 parser.add_argument('--label_num', type=int, default=2)
 parser.add_argument('--seed', type=int, default=1)
 args = parser.parse_args()
+
 # used for this:
 # python main.py --lr=0.001 --epoch=20 --batch_size=64 --gpu=0 --seed=0 --label_num=2
+# print(args.lr, args.epoch)
 
 # seed for random numbers
 torch.manual_seed(args.seed)
@@ -50,14 +52,18 @@ config = Config(sentence_max_size=50,
                 label_num=args.label_num,
                 out_channel=args.out_channel)
 
-training_set = TextDataset(path='data/train')
+training_set = TextDataset(path='../DBpedia/')
 
+# https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader
 training_iter = data.DataLoader(dataset=training_set,
                                 batch_size=config.batch_size,
-                                num_workers=2)
+                                num_workers=0)
 
+
+print(type(DPCNN))
 
 model = DPCNN(config)
+
 embeds = nn.Embedding(config.word_num, config.word_embedding_dimension)
 
 if torch.cuda.is_available():
@@ -94,6 +100,7 @@ for epoch in range(config.epoch):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
     # save the model in every epoch
     model.save('checkpoints/epoch{}.ckpt'.format(epoch))
 

@@ -3,8 +3,8 @@
 
 class Config(object):
     def __init__(self,
-                 word_embedding_dimension=100,
-                 word_num=20000,
+                 word_embedding_dimension=200,
+                 word_num=10000,
                  epoch=2000,
                  sentence_max_size=40,
                  learning_rate=0.01,

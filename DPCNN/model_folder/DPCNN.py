@@ -24,7 +24,7 @@ class DPCNN(BasicModule):
 
         # Region embedding
         x = self.conv_region_embedding(x)        # [batch_size, channel_size, length, 1]
-
+        
         x = self.padding_conv(x)                      # pad保证等长卷积，先通过激活函数再卷积
         x = self.act_fun(x)
         x = self.conv3(x)

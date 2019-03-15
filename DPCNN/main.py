@@ -9,13 +9,9 @@ import torch.utils.data as data
 import argparse
 
 # import from folders
-#from DPCNN.config import Config
-#from DPCNN.model import DPCNN
-#from DPCNN.data import TextDataset
-
 from config import Config
-from model import DPCNN, Example2
-from data import TextDataset
+from model_folder import DPCNN
+from data_folder import TextDataset
 
 # seed for random numbers
 torch.manual_seed(1)
@@ -45,7 +41,7 @@ if torch.cuda.is_available():
 # Create the configuration
 config = Config(sentence_max_size=50,
                 batch_size=args.batch_size,
-                word_num=11000,
+                word_num=560000,
                 learning_rate=args.lr,
                 epoch=args.epoch,
                 cuda=args.gpu,
@@ -64,6 +60,7 @@ print(type(DPCNN))
 
 model = DPCNN(config)
 
+# https://pytorch.org/tutorials/beginner/nlp/word_embeddings_tutorial.html
 embeds = nn.Embedding(config.word_num, config.word_embedding_dimension)
 
 if torch.cuda.is_available():
@@ -71,20 +68,41 @@ if torch.cuda.is_available():
     embeds = embeds.cuda()
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=config.lr)
+optimizer = optim.SGD(modelDPCNN.parameters(), lr=config.lr)
 
 count = 0
 loss_sum = 0
 
+"""
+iterator = 0
+for item, label in training_iter:
+    iterator += 1
+    print(item)
+    print(label)
+    if iterator == 3:
+        break
+"""
+
+i = 0
 # Train the model
 for epoch in range(config.epoch):
     for data, label in training_iter:
+
+        i += 1
+        print(i)
+        # print(data)
+        # print(label)
+
         if config.cuda and torch.cuda.is_available():
             data = data.cuda()
-            labels = label.cuda()
+            label = label.cuda()
 
+        print(type(data))
+        # main error we have: this is a tuple instead of a tensor
+
+        # data = embeds(autograd.Variable(data))       # what there was before and we think it is wrong
         input_data = embeds(autograd.Variable(data))
-        out = model(data)
+        out = model(input_data)
         loss = criterion(out, autograd.Variable(label.float()))
 
         loss_sum += loss.data[0]
